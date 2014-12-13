@@ -1,1 +1,2 @@
 I am learning Ajax.
+Just want to know whether I can run it via windows or not.
