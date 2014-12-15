@@ -20,8 +20,8 @@
 		<br class="clear">
 	</div>
 	
-	<!-- <div id="single" class="highlight"> -->
-	<!-- </div> -->
+	<div id="single" class="highlight">
+	</div>
 	
 	<div id="content">
 		<div id="login" class="hide">
@@ -70,8 +70,9 @@
 </div>
 <script type="text/javascript" src = "jquery.js"></script>
 <script type="text/javascript">
+	var loggedIn = false;
 	$(document).ready(function(){
-		alert('Page is ready.');
+		// alert('Page is ready.');
 		$('#btnLogin').on('click',
 			function()
 			{
@@ -80,8 +81,80 @@
 		$('#btnSubmitQuote').on('click',
 			function()
 			{
-				$('#addQuote').slideDown();
+				if ( loggedIn == true )
+				{
+					$('#addQuote').slideDown();
+				}
+				else
+				{
+					alert('You need to log in .');
+				}
 			});
+
+		setInterval(function(){ 
+		$('#single').load('quote-get-single.php');
+
+		},5000);
+
+		$('#submitLogin').on
+
+			('click',
+				function()
+					{
+						$.post('login.php',
+						{
+							'u':$('#username').val(),'p': $('#password').val()
+						}
+
+						,
+						function(data){
+							if ( data == 'success')
+							{
+								alert('You are successfully logged in');
+								loggedIn = true;
+								$('#login').slideUp();
+							}
+							else
+							{
+								alert('You are not logged in');
+							}
+
+						});
+						return false;
+					}
+			);
+
+		$('#submitQuote').on
+		(
+			'click',
+			function()
+			{
+				$.post
+				(
+					'quote-add.php',
+					{
+						'quotetext' : $('#quotetext').val(),
+						'author' : $("#author").val(),
+						'tags' : $('#tags').val()
+					},
+					function(data)
+					{
+						if ( data == 'success')
+						{
+							alert('The quote has been added successfully.');
+						}
+						else
+						{
+							alert(data);
+						}
+					}
+
+				);
+				return false;
+
+			}
+		)
+
 	});
 
 
