@@ -73,6 +73,8 @@
 	var loggedIn = false;
 	$(document).ready(function(){
 		// alert('Page is ready.');
+		
+
 		$('#btnLogin').on('click',
 			function()
 			{
@@ -123,38 +125,56 @@
 						return false;
 					}
 			);
+			
 
-		$('#submitQuote').on
-		(
-			'click',
-			function()
-			{
-				$.post
-				(
-					'quote-add.php',
+			$('#submitQuote').on
+			(
+				'click',
+				function()
+				{
+					var complete = true;
+					if ( $('#quotetext').val() == '')
 					{
-						'quotetext' : $('#quotetext').val(),
-						'author' : $("#author").val(),
-						'tags' : $('#tags').val()
-					},
-					function(data)
-					{
-						if ( data == 'success')
-						{
-							alert('The quote has been added successfully.');
-						}
-						else
-						{
-							alert(data);
-						}
+						complete = false;
+						alert('please fill up quotetext completely.')
 					}
+					if ( $('#author').val() == '')
+					{
+						complete = false;
+						alert('please fill up author completely.')
 
-				);
-				return false;
+					}
+					if ( complete == true )
+					{
+						$.post
+						(
+							'quote-add.php',
+							{
+								'quotetext' : $('#quotetext').val(),
+								'author' : $("#author").val(),
+								'tags' : $('#tags').val()
+							},
+							function(data)
+							{
+								if ( data == 'success')
+								{
+									alert('The quote has been added successfully.');
+									$('#addQuote').slideUp();
+								}
+								else
+								{
+									alert('You didnot filled all the forms.');
+								}
+							}
 
-			}
-		)
+						);
+					}
+					return false;
 
+				}
+			);
+
+		
 	});
 
 
